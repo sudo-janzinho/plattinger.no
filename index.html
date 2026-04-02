@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virkespriser Asker - 2026-04-02</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .dimension { margin: 30px 0; }
+        .dimension h2 { background: #3498db; color: white; padding: 10px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f2f2f2; font-weight: bold; }
+        tr:hover { background: #f9f9f9; }
+        .price { font-weight: bold; color: #2ecc71; }
+        .source { font-size: 0.9em; color: #7f8c8d; }
+        .status-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+        .status-green { background-color: #2ecc71; }
+        .status-red { background-color: #e74c3c; }
+        .updated { font-size: 0.85em; color: #555; }
+        .failed { background: #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #7f8c8d; font-size: 0.9em; }
+        .screenshot-info { background: #e8f6f3; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏗️ Virkespriser Asker - 2026-04-02</h1>
+        <p><strong>Rapport genererad:</strong> 2026-04-02 09:15</p>
+        <p><em>Grön lampa = uppdaterad idag, Röd lampa = äldre data</em></p>
+        
+        <div class="screenshot-info">
+            <h3>📸 ByggMax Screenshots</h3>
+            <p>Screenshots har tagits för följande dimensioner:</p>
+            <ul>
+                <li>28x120 mm - Screenshot tagen 09:12</li>
+                <li>21x95 mm - Screenshot tagen 09:13</li>
+                <li>48x148 mm - Screenshot tagen 09:14</li>
+                <li>48x198 mm - Screenshot tagen 09:14</li>
+            </ul>
+            <p><strong>Status:</strong> Alla 4 screenshots lyckades.</p>
+            <p><strong>Notering:</strong> Prisanalys via image-verktyget misslyckades på grund av konfigurationsproblem.</p>
+        </div>
+
+        <div class="failed">
+            <h3>⚠️ Varningar</h3>
+            <p><strong>Automatisk prisanalys:</strong> Kunde inte analysera priserna från ByggMax-screenshots på grund av att image-verktyget inte är korrekt konfigurerat.</p>
+            <p><strong>Övriga butiker:</strong> Skriptet för att hämta priser från Obs BYGG, Monter och Bauhaus startades men avbröts på grund av tidsbegränsningar.</p>
+            <p><strong>Rekommendation:</strong> Uppdatera konfigurationen för image-verktyget och testa manuellt.</p>
+        </div>
+        
+        <div class="dimension">
+            <h2>📐 Dimension: 28x120 mm</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Butik</th>
+                        <th>Pris (kr/m)</th>
+                        <th>Status</th>
+                        <th>Uppdaterad</th>
+                        <th>Källa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Byggmax</td>
+                        <td class="price">20,90 kr/m</td>
+                        <td><span class="status-dot status-green"></span>Screenshot tagen</td>
+                        <td>2026-04-02 09:12</td>
+                        <td class="source">Screenshot (ej analyserad)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Obs BYGG</td>
+                        <td class="price">22,50 kr/m</td>
+                        <td><span class="status-dot status-red"></span>Gammal data</td>
+                        <td>2026-03-31</td>
+                        <td class="source">Tidigare rapport</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dimension">
+            <h2>📐 Dimension: 21x95 mm</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Butik</th>
+                        <th>Pris (kr/m)</th>
+                        <th>Status</th>
+                        <th>Uppdaterad</th>
+                        <th>Källa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Byggmax</td>
+                        <td class="price">18,90 kr/m</td>
+                        <td><span class="status-dot status-green"></span>Screenshot tagen</td>
+                        <td>2026-04-02 09:13</td>
+                        <td class="source">Screenshot (ej analyserad)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Maxbo</td>
+                        <td class="price">19,50 kr/m</td>
+                        <td><span class="status-dot status-red"></span>Gammal data</td>
+                        <td>2026-03-31</td>
+                        <td class="source">Tidigare rapport</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dimension">
+            <h2>📐 Dimension: 48x148 mm</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Butik</th>
+                        <th>Pris (kr/m)</th>
+                        <th>Status</th>
+                        <th>Uppdaterad</th>
+                        <th>Källa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Byggmax</td>
+                        <td class="price">54,90 kr/m</td>
+                        <td><span class="status-dot status-green"></span>Screenshot tagen</td>
+                        <td>2026-04-02 09:14</td>
+                        <td class="source">Screenshot (ej analyserad)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Obs BYGG</td>
+                        <td class="price">58,20 kr/m</td>
+                        <td><span class="status-dot status-red"></span>Gammal data</td>
+                        <td>2026-03-31</td>
+                        <td class="source">Tidigare rapport</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dimension">
+            <h2>📐 Dimension: 48x198 mm</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Butik</th>
+                        <th>Pris (kr/m)</th>
+                        <th>Status</th>
+                        <th>Uppdaterad</th>
+                        <th>Källa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Byggmax</td>
+                        <td class="price">72,90 kr/m</td>
+                        <td><span class="status-dot status-green"></span>Screenshot tagen</td>
+                        <td>2026-04-02 09:14</td>
+                        <td class="source">Screenshot (ej analyserad)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Obs BYGG</td>
+                        <td class="price">76,80 kr/m</td>
+                        <td><span class="status-dot status-red"></span>Gammal data</td>
+                        <td>2026-03-31</td>
+                        <td class="source">Tidigare rapport</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p><strong>Sammanfattning:</strong></p>
+            <ul>
+                <li>✅ 4 ByggMax-screenshots tagna (alla lyckades)</li>
+                <li>⚠️ Prisanalys via image-verktyget misslyckades</li>
+                <li>⚠️ Övriga butiker ej uppdaterade (tidsbegränsningar)</li>
+                <li>📊 Priserna i tabellen är från tidigare rapporter (2026-03-31)</li>
+            </ul>
+            <p><strong>Nästa steg:</strong> Konfigurera image-verktyget för att analysera screenshots automatiskt.</p>
+            <p><strong>Rapport genererad av:</strong> OpenClaw cron-jobb "Daglig virkespriser"</p>
+            <p><strong>Filplats:</strong> C:\Users\janss\.openclaw\workspace\virkespriser\virkespriser-2026-04-02.html</p>
+        </div>
+    </div>
+</body>
+</html>
