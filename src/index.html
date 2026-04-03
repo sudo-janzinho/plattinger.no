@@ -1,217 +1,283 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Plattinger AS - Spesialister på betongrenovering og overflatebehandling. Profesjonell kvalitet siden 1990.">
-  <title>Plattinger AS | Betongrenovering og Overflatebehandling</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plattinger.no - Jämför virkespriser i Asker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #1e3a5f 0%, #0f2027 100%); min-height: 100vh; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
+        .best-price { background: linear-gradient(135deg, #10b981, #059669); }
+        .missing { opacity: 0.6; background: rgba(239, 68, 68, 0.1); }
+        .store-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; }
+        .loading { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
 </head>
-<body>
-  <!-- Header -->
-  <header class="header">
-    <nav class="nav container">
-      <div class="logo">
-        <h1>Plattinger<span class="highlight">AS</span></h1>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#hjem">Hjem</a></li>
-        <li><a href="#tjenester">Tjenester</a></li>
-        <li><a href="#om">Om oss</a></li>
-        <li><a href="#prosjekter">Prosjekter</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
-      </ul>
-      <button class="mobile-menu-btn" aria-label="Åpne meny">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </nav>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="hjem" class="hero">
-    <div class="container hero-content">
-      <h2 class="hero-title">Spesialister på <span class="highlight">Betongrenovering</span></h2>
-      <p class="hero-subtitle">Profesjonell overflatebehandling for varige resultater</p>
-      <a href="#kontakt" class="btn btn-primary">Be om gratis befaring</a>
-    </div>
-  </section>
-
-  <!-- Tjenester -->
-  <section id="tjenester" class="services section">
-    <div class="container">
-      <h2 class="section-title">Våre Tjenester</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">🏗️</div>
-          <h3>Betongrenovering</h3>
-          <p>Reparasjon og restaurering av skadet betong. Vi bruker moderne metoder for langvarige resultater.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">✨</div>
-          <h3>Overflatebehandling</h3>
-          <p>Sliping, polering og beskyttende behandling av betongflater for industri og privatmarked.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🔨</div>
-          <h3>Gulvbehandling</h3>
-          <p>Epoksy, polyurea og andre gulvsystemer for garage, lager og industri.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">💧</div>
-          <h3>Membran & Tetting</h3>
-          <p>Vann- og fuktsikring av betongkonstruksjoner. Balkonger, tak og kjellere.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Om oss -->
-  <section id="om" class="about section">
-    <div class="container about-content">
-      <div class="about-text">
-        <h2 class="section-title">Om Plattinger AS</h2>
-        <p>Plattinger AS har vært spesialister på betongrenovering og overflatebehandling i over 30 år. Vi leverer kvalitetshåndverk til både privatkunder og bedrifter.</p>
-        <p>Vårt team består av erfarne fagfolk som bruker de nyeste metodene og materialene for å sikre varige resultater.</p>
-        <ul class="about-features">
-          <li>✓ 30+ års erfaring</li>
-          <li>✓ Sertifiserte fagfolk</li>
-          <li>✓ Moderne utstyr og metoder</li>
-          <li>✓ Gratis befaring og tilbud</li>
-          <li>✓ Konkurransedyktige priser</li>
-        </ul>
-      </div>
-      <div class="about-image">
-        <div class="placeholder-image">
-          <span>Bilde av prosjekt</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Prosjekter -->
-  <section id="prosjekter" class="projects section">
-    <div class="container">
-      <h2 class="section-title">Våre Prosjekter</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-image">
-            <div class="placeholder-image">
-              <span>Prosjektbilde 1</span>
+<body class="text-white p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <i class="fas fa-tree text-4xl text-green-400"></i>
+                <i class="fas fa-tools text-4xl text-amber-400"></i>
             </div>
-          </div>
-          <div class="project-info">
-            <h3>Industrihall Oslo</h3>
-            <p>Epoksygulv 2000m²</p>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-image">
-            <div class="placeholder-image">
-              <span>Prosjektbilde 2</span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-amber-400 to-blue-400">
+                Plattinger.no
+            </h1>
+            <p class="text-xl text-gray-300 mb-2">Jämför virkespriser i Asker</p>
+            <p class="text-gray-400">Tryckimpregnerat virke | Klass 1</p>
+            <div class="mt-4 flex justify-center gap-4 text-sm flex-wrap">
+                <span class="px-4 py-2 glass rounded-full">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span id="last-updated">Laddar...</span>
+                </span>
+                <span class="px-4 py-2 glass rounded-full">
+                    <i class="fas fa-clock mr-2 text-blue-400"></i>
+                    <span id="next-update">Nästa: ...</span>
+                </span>
             </div>
-          </div>
-          <div class="project-info">
-            <h3>Balkongrenovering Bærum</h3>
-            <p>Membran og flis 45 balkonger</p>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-image">
-            <div class="placeholder-image">
-              <span>Prosjektbilde 3</span>
-            </div>
-          </div>
-          <div class="project-info">
-            <h3>Parkeringshus Drammen</h3>
-            <p>Betongreparasjon og coating</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        </header>
 
-  <!-- Kontakt -->
-  <section id="kontakt" class="contact section">
-    <div class="container">
-      <h2 class="section-title">Kontakt Oss</h2>
-      <div class="contact-content">
-        <div class="contact-info">
-          <h3>Få en gratis befaring</h3>
-          <p>Vi kommer gjerne på en uforpliktende befaring og gir deg et godt tilbud.</p>
-          <div class="contact-details">
-            <div class="contact-item">
-              <span class="icon">📞</span>
-              <div>
-                <strong>Telefon</strong>
-                <p>+47 12 34 56 78</p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="icon">✉️</span>
-              <div>
-                <strong>E-post</strong>
-                <p>post@plattinger.no</p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="icon">📍</span>
-              <div>
-                <strong>Adresse</strong>
-                <p>Industriveien 123, 1234 Oslo</p>
-              </div>
-            </div>
-          </div>
+        <!-- Loading state -->
+        <div id="loading" class="text-center py-20">
+            <i class="fas fa-circle-notch text-5xl text-blue-400 loading mb-4"></i>
+            <p class="text-xl text-gray-300">Laddar priser...</p>
         </div>
-        <form class="contact-form" id="contactForm">
-          <div class="form-group">
-            <label for="name">Navn *</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">E-post *</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">Telefon</label>
-            <input type="tel" id="phone" name="phone">
-          </div>
-          <div class="form-group">
-            <label for="message">Melding *</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full">Send melding</button>
-        </form>
-      </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Plattinger AS</h3>
-          <p>Spesialister på betongrenovering og overflatebehandling.</p>
+        <!-- Error state -->
+        <div id="error" class="hidden glass rounded-2xl p-8 text-center">
+            <i class="fas fa-exclamation-triangle text-5xl text-red-400 mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2">Kunde inte ladda priser</h2>
+            <p class="text-gray-400 mb-4">Försök igen om några minuter</p>
+            <button onclick="loadPrices()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">
+                <i class="fas fa-sync-alt mr-2"></i>Försök igen
+            </button>
         </div>
-        <div class="footer-section">
-          <h4>Kontakt</h4>
-          <p>Telefon: +47 12 34 56 78</p>
-          <p>E-post: post@plattinger.no</p>
-        </div>
-        <div class="footer-section">
-          <h4>Åpningstider</h4>
-          <p>Man-Fre: 08:00 - 16:00</p>
-          <p>Lør-Søn: Stengt</p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Plattinger AS. Alle rettigheter reservert.</p>
-      </div>
-    </div>
-  </footer>
 
-  <script src="app.js"></script>
+        <!-- Content container -->
+        <div id="content" class="hidden">
+            <!-- 28x120 Terrassebord -->
+            <section class="mb-8" id="dim-28x120">
+                <h2 class="text-2xl font-bold mb-4 text-amber-400">
+                    <i class="fas fa-layer-group mr-2"></i>Terrassebord 28x120 mm
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="prices-28x120">
+                    <!-- Cards genereras av JavaScript -->
+                </div>
+            </section>
+
+            <!-- 21x95 Terrassebord -->
+            <section class="mb-8" id="dim-21x95">
+                <h2 class="text-2xl font-bold mb-4 text-amber-400">
+                    <i class="fas fa-layer-group mr-2"></i>Terrassebord 21x95 mm
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="prices-21x95">
+                    <!-- Cards genereras av JavaScript -->
+                </div>
+            </section>
+
+            <!-- 48x148 Konstruksjonsvirke -->
+            <section class="mb-8" id="dim-48x148">
+                <h2 class="text-2xl font-bold mb-4 text-blue-400">
+                    <i class="fas fa-hammer mr-2"></i>Konstruksjonsvirke 48x148 mm
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="prices-48x148">
+                    <!-- Cards genereras av JavaScript -->
+                </div>
+            </section>
+
+            <!-- 48x198 Konstruksjonsvirke -->
+            <section class="mb-8" id="dim-48x198">
+                <h2 class="text-2xl font-bold mb-4 text-blue-400">
+                    <i class="fas fa-hammer mr-2"></i>Konstruksjonsvirke 48x198 mm
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="prices-48x198">
+                    <!-- Cards genereras av JavaScript -->
+                </div>
+            </section>
+
+            <!-- Sammanfattning -->
+            <section class="glass rounded-2xl p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">
+                    <i class="fas fa-chart-bar mr-2 text-green-400"></i>Sammanfattning
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="glass rounded-lg p-4">
+                        <p class="text-green-400 font-semibold mb-2">Billigast just nu</p>
+                        <p class="text-gray-400" id="cheapest-price">Laddar...</p>
+                    </div>
+                    <div class="glass rounded-lg p-4">
+                        <p class="text-amber-400 font-semibold mb-2">Butiker jämförs</p>
+                        <p class="text-gray-400" id="store-count">Laddar...</p>
+                    </div>
+                    <div class="glass rounded-lg p-4">
+                        <p class="text-blue-400 font-semibold mb-2">Uppdaterade idag</p>
+                        <p class="text-gray-400" id="updated-today">Laddar...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="text-center text-gray-500 text-sm mt-12">
+            <p>
+                <i class="fas fa-robot mr-1"></i>
+                Priser hämtas automatiskt 2 gånger dagligen
+            </p>
+            <p class="mt-2 text-xs">
+                <i class="fas fa-code mr-1"></i>
+                Byggd med OpenClaw | <a href="https://github.com/sudo-janzinho/plattinger.no" target="_blank" class="text-blue-400 hover:text-blue-300">GitHub</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Dimension mapping
+        const DIMENSION_NAMES = {
+            '28x120': 'Terrassebord 28x120 mm',
+            '21x95': 'Terrassebord 21x95 mm',
+            '48x148': 'Konstruksjonsvirke 48x148 mm',
+            '48x198': 'Konstruksjonsvirke 48x198 mm'
+        };
+
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return 'Okänt';
+            const date = new Date(dateString);
+            return date.toLocaleString('sv-SE', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format price
+        function formatPrice(price) {
+            return price.toFixed(2).replace('.', ',') + ' kr/m';
+        }
+
+        // Create price card
+        function createCard(price, isCheapest) {
+            const statusIcon = price.status === 'green' 
+                ? '<i class="fas fa-circle text-green-400 text-xs mr-1"></i>' 
+                : '<i class="fas fa-circle text-red-400 text-xs mr-1"></i>';
+            
+            const statusText = price.status === 'green' ? 'Uppdaterad idag' : 'Äldre data';
+            
+            const changeIndicator = price.changed_since_last 
+                ? `<div class="text-xs ${price.change > 0 ? 'text-red-400' : 'text-green-400'} mt-1">
+                     ${price.change > 0 ? '↑' : '↓'} ${Math.abs(price.change_percent)}%
+                   </div>`
+                : '';
+
+            return `
+                <div class="card ${isCheapest ? 'best-price' : 'glass'} rounded-xl p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="store-icon ${price.store_color}">${price.store_icon}</div>
+                        <div>
+                            <h3 class="font-bold">${price.butikk}</h3>
+                            <p class="text-xs text-green-100">Asker</p>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-bold mb-2">${formatPrice(price.pris_kr_m)}</div>
+                    ${changeIndicator}
+                    <div class="text-xs text-gray-400 mt-2">
+                        ${statusIcon}${statusText}
+                    </div>
+                    ${price.kilde_url ? `
+                        <a href="${price.kilde_url}" target="_blank" class="text-sm text-blue-300 hover:text-blue-200 inline-block mt-2">
+                            <i class="fas fa-external-link-alt mr-1"></i>Se produkt →
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Render prices
+        function renderPrices(data) {
+            const content = document.getElementById('content');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+
+            // Hide loading, show content
+            loading.classList.add('hidden');
+            content.classList.remove('hidden');
+
+            // Update timestamps
+            document.getElementById('last-updated').textContent = formatDate(data.generated_at);
+            document.getElementById('next-update').textContent = 'Nästa: ' + formatDate(data.next_update).split(', ')[1];
+
+            // Track stats
+            let cheapestPrice = Infinity;
+            let cheapestStore = '';
+            let cheapestDimension = '';
+            let totalStores = new Set();
+            let updatedToday = 0;
+
+            // Render each dimension
+            for (const [dimension, prices] of Object.entries(data.dimensions)) {
+                const container = document.getElementById(`prices-${dimension}`);
+                if (!container) continue;
+
+                container.innerHTML = prices.map((price, index) => {
+                    // Track cheapest
+                    if (price.pris_kr_m < cheapestPrice) {
+                        cheapestPrice = price.pris_kr_m;
+                        cheapestStore = price.butikk;
+                        cheapestDimension = dimension;
+                    }
+
+                    // Track stores
+                    totalStores.add(price.butikk);
+
+                    // Track updated today
+                    if (price.status === 'green') updatedToday++;
+
+                    return createCard(price, index === 0);
+                }).join('');
+            }
+
+            // Update summary
+            document.getElementById('cheapest-price').textContent = 
+                `${cheapestStore} ${cheapestDimension}: ${formatPrice(cheapestPrice)}`;
+            document.getElementById('store-count').textContent = 
+                `${totalStores.size} butiker`;
+            document.getElementById('updated-today').textContent = 
+                `${updatedToday} av ${Object.values(data.dimensions).reduce((sum, p) => sum + p.length, 0)} priser`;
+        }
+
+        // Show error
+        function showError() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+        }
+
+        // Load prices
+        async function loadPrices() {
+            try {
+                const response = await fetch('api/priser.json');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const data = await response.json();
+                renderPrices(data);
+            } catch (error) {
+                console.error('Fel vid hämtning av priser:', error);
+                showError();
+            }
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadPrices);
+    </script>
 </body>
 </html>
