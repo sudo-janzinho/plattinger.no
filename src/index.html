@@ -181,12 +181,15 @@
                    </div>`
                 : '';
 
+            // Fallback för saknade butiker (visa "Saknas" istället för undefined)
+            const butikName = price.butikk || price.butik || 'Saknas';
+
             return `
                 <div class="card ${isCheapest ? 'best-price' : 'glass'} rounded-xl p-4">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="store-icon ${price.store_color}">${price.store_icon}</div>
                         <div>
-                            <h3 class="font-bold">${price.butikk}</h3>
+                            <h3 class="font-bold">${butikName}</h3>
                             <p class="text-xs text-green-100">Asker</p>
                         </div>
                     </div>
@@ -216,7 +219,8 @@
 
             // Update timestamps
             document.getElementById('last-updated').textContent = formatDate(data.generated_at);
-            document.getElementById('next-update').textContent = 'Nästa: ' + formatDate(data.next_update).split(', ')[1];
+            const nextUpdate = data.next_update ? formatDate(data.next_update).split(', ')[1] : 'Okänt';
+            document.getElementById('next-update').textContent = 'Nästa: ' + nextUpdate;
 
             // Track stats
             let cheapestPrice = Infinity;
@@ -230,16 +234,24 @@
                 const container = document.getElementById(`prices-${dimension}`);
                 if (!container) continue;
 
-                container.innerHTML = prices.map((price, index) => {
+                // Filter out invalid prices
+                const validPrices = prices.filter(p => p.pris_kr_m && p.pris_kr_m > 0);
+
+                if (validPrices.length === 0) {
+                    container.innerHTML = '<p class="text-gray-400 col-span-full text-center">Inga priser tillgängliga</p>';
+                    continue;
+                }
+
+                container.innerHTML = validPrices.map((price, index) => {
                     // Track cheapest
                     if (price.pris_kr_m < cheapestPrice) {
                         cheapestPrice = price.pris_kr_m;
-                        cheapestStore = price.butikk;
+                        cheapestStore = price.butikk || price.butik || 'Okänd';
                         cheapestDimension = dimension;
                     }
 
                     // Track stores
-                    totalStores.add(price.butikk);
+                    totalStores.add(price.butikk || price.butik || 'Okänd');
 
                     // Track updated today
                     if (price.status === 'green') updatedToday++;
@@ -249,12 +261,14 @@
             }
 
             // Update summary
-            document.getElementById('cheapest-price').textContent = 
-                `${cheapestStore} ${cheapestDimension}: ${formatPrice(cheapestPrice)}`;
+            const totalPrices = Object.values(data.dimensions).reduce((sum, p) => sum + (p?.length || 0), 0);
+            document.getElementById('cheapest-price').textContent = cheapestPrice < Infinity
+                ? `${cheapestStore} ${cheapestDimension}: ${formatPrice(cheapestPrice)}`
+                : 'Inga priser';
             document.getElementById('store-count').textContent = 
                 `${totalStores.size} butiker`;
             document.getElementById('updated-today').textContent = 
-                `${updatedToday} av ${Object.values(data.dimensions).reduce((sum, p) => sum + p.length, 0)} priser`;
+                `${updatedToday} av ${totalPrices} priser`;
         }
 
         // Show error
