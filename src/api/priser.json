@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-05T21:48:40",
+  "generated_at": "2026-04-05T23:08:57",
   "next_update": "2026-04-05T22:00:00",
   "dimensions": {
     "28x120": [
@@ -79,21 +79,21 @@
       },
       {
         "butik": "Monter",
-        "pris_kr_m": 163.0,
+        "pris_kr_m": 16.3,
         "produkt": "",
         "kvalitet_klass": "Kl.1",
         "impregnering": "CU",
         "kampanj": false,
         "kilde_url": "https://www.monter.no/trelast/terrassebord/impregnert-terrassebord/terrassebord-impregnert-furu-klasse-1-21x95x3600-mm",
         "datum_funnet": "2026-04-05",
-        "uppdaterad": "2026-04-05 09:46:15",
+        "uppdaterad": "2026-04-05 23:08:50",
         "status": "green",
         "store_color": "bg-orange-600",
         "store_icon": "M",
-        "changed_since_last": false,
+        "changed_since_last": true,
         "previous_price": 163.0,
-        "change": 0,
-        "change_percent": 0.0
+        "change": -146.7,
+        "change_percent": -90.0
       }
     ],
     "48x148": [
