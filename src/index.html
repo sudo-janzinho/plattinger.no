@@ -281,7 +281,7 @@
         // Load prices
         async function loadPrices() {
             try {
-                const response = await fetch('api/priser.json');
+                const response = await fetch('src/api/priser.json');
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const data = await response.json();
                 renderPrices(data);
