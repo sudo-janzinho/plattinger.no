@@ -6,7 +6,7 @@
 // Hämta och visa priser när sidan laddats
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const response = await fetch('api/priser.json');
+    const response = await fetch('src/api/priser.json');
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
