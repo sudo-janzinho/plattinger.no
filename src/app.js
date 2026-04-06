@@ -1,5 +1,6 @@
 /**
  * Plattinger.no - Visar virkespriser från src/api/priser.json
+ * Version: 2026-04-07-0033 - FIXAD SÖKVÄG
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
