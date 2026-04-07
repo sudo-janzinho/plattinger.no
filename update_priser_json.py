@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 DB_PATH = '../virkespriser/virke_priser.db'
-JSON_PATH = 'src/api/priser.json'
+JSON_PATH = 'api/priser.json'
 
 # Butikkonfig - färger och ikoner
 STORE_CONFIG = {
