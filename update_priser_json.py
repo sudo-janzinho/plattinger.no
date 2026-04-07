@@ -26,7 +26,7 @@ conn = sqlite3.connect(DB_PATH)
 c = conn.cursor()
 c.execute("""
     SELECT butik, dimension, pris_kr_m, produkt, kvalitet_klass, impregnering, 
-           kampanj, kilde_url, datum_funnet, uppdaterad, ort
+           kampanj, kilde_url, datum_funnet, uppdaterad, ort, kommune
     FROM virke_priser 
     ORDER BY dimension, butik
 """)
@@ -38,7 +38,7 @@ print(f"Läste {len(rows)} priser från databasen")
 # Gruppera priser per dimension
 dimensions = {}
 for row in rows:
-    (butik, dim, price, produkt, klass, imp, kampanj, url, datum, updated, ort) = row
+    (butik, dim, price, produkt, klass, imp, kampanj, url, datum, updated, ort, kommune) = row
     
     if dim not in dimensions:
         dimensions[dim] = []
@@ -58,6 +58,7 @@ for row in rows:
         'status': 'green',
         'store_color': config['color'],
         'store_icon': config['icon'],
+        'kommune': kommune or 'Asker',
         'changed_since_last': False,
         'previous_price': price,
         'change': 0,

@@ -34,8 +34,17 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-amber-400 to-blue-400">
                 Plattinger.no
             </h1>
-            <p class="text-xl text-gray-300 mb-2">Jämför virkespriser i Asker</p>
+            <p class="text-xl text-gray-300 mb-2">Jämför virkespriser i <span id="kommune-name">Asker</span></p>
             <p class="text-gray-400">Tryckimpregnerat virke | Klass 1</p>
+            
+            <!-- Kommune selector -->
+            <div class="mt-4 flex justify-center">
+                <select id="kommune-selector" onchange="selectKommune(this.value)" class="px-6 py-3 glass rounded-lg text-white font-semibold cursor-pointer hover:bg-white/10 transition">
+                    <option value="Asker">Asker</option>
+                    <option value="Drammen">Drammen</option>
+                </select>
+            </div>
+            
             <div class="mt-4 flex justify-center gap-4 text-sm flex-wrap">
                 <span class="px-4 py-2 glass rounded-full">
                     <i class="fas fa-calendar mr-2"></i>
@@ -142,6 +151,16 @@
     </div>
 
     <script>
+        // Current kommune
+        let currentKommune = 'Asker';
+
+        // Kommune selector
+        function selectKommune(kommune) {
+            currentKommune = kommune;
+            document.getElementById('kommune-name').textContent = kommune;
+            renderPrices(window.currentData);
+        }
+
         // Dimension mapping
         const DIMENSION_NAMES = {
             '28x120': 'Terrassebord 28x120 mm',
@@ -191,7 +210,7 @@
                         <div class="store-icon ${price.store_color}">${price.store_icon}</div>
                         <div>
                             <h3 class="font-bold">${butikName}</h3>
-                            <p class="text-xs text-green-100">Asker</p>
+                            <p class="text-xs text-green-100">${price.kommune || 'Asker'}</p>
                         </div>
                     </div>
                     <div class="text-3xl font-bold mb-2">${formatPrice(price.pris_kr_m)}</div>
@@ -210,6 +229,9 @@
 
         // Render prices
         function renderPrices(data) {
+            // Save data globally for kommune switching
+            window.currentData = data;
+            
             const content = document.getElementById('content');
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
@@ -220,8 +242,8 @@
 
             // Update timestamps
             document.getElementById('last-updated').textContent = formatDate(data.generated_at);
-            const nextUpdate = data.next_update ? formatDate(data.next_update).split(', ')[1] : 'Okänt';
-            document.getElementById('next-update').textContent = 'Nästa: ' + nextUpdate;
+            const nextUpdate = data.next_update ? formatDate(data.next_update).split(', ')[1] : 'Ukjent';
+            document.getElementById('next-update').textContent = 'Neste: ' + nextUpdate;
 
             // Track stats
             let cheapestPrice = Infinity;
@@ -235,11 +257,14 @@
                 const container = document.getElementById(`prices-${dimension}`);
                 if (!container) continue;
 
-                // Filter out invalid prices
-                const validPrices = prices.filter(p => p.pris_kr_m && p.pris_kr_m > 0);
+                // Filter by kommune AND valid prices
+                const validPrices = prices.filter(p => 
+                    p.pris_kr_m && p.pris_kr_m > 0 && 
+                    (p.kommune === currentKommune || currentKommune === 'Alle')
+                );
 
                 if (validPrices.length === 0) {
-                    container.innerHTML = '<p class="text-gray-400 col-span-full text-center">Inga priser tillgängliga</p>';
+                    container.innerHTML = '<p class="text-gray-400 col-span-full text-center">Ingen priser tilgjengelig</p>';
                     continue;
                 }
 
@@ -247,12 +272,12 @@
                     // Track cheapest
                     if (price.pris_kr_m < cheapestPrice) {
                         cheapestPrice = price.pris_kr_m;
-                        cheapestStore = price.butikk || price.butik || 'Okänd';
+                        cheapestStore = price.butikk || price.butik || 'Ukjent';
                         cheapestDimension = dimension;
                     }
 
                     // Track stores
-                    totalStores.add(price.butikk || price.butik || 'Okänd');
+                    totalStores.add(price.butikk || price.butik || 'Ukjent');
 
                     // Track updated today
                     if (price.status === 'green') updatedToday++;
@@ -265,9 +290,9 @@
             const totalPrices = Object.values(data.dimensions).reduce((sum, p) => sum + (p?.length || 0), 0);
             document.getElementById('cheapest-price').textContent = cheapestPrice < Infinity
                 ? `${cheapestStore} ${cheapestDimension}: ${formatPrice(cheapestPrice)}`
-                : 'Inga priser';
+                : 'Ingen priser';
             document.getElementById('store-count').textContent = 
-                `${totalStores.size} butiker`;
+                `${totalStores.size} butikker`;
             document.getElementById('updated-today').textContent = 
                 `${updatedToday} av ${totalPrices} priser`;
         }
@@ -287,7 +312,7 @@
                 const data = await response.json();
                 renderPrices(data);
             } catch (error) {
-                console.error('Fel vid hämtning av priser:', error);
+                console.error('Feil ved henting av priser:', error);
                 showError();
             }
         }
