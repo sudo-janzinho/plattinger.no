@@ -1,16 +1,40 @@
 """
 UPPDATERA PRISER.JSON - BYGGS FRÅN GRUNDEN
 ===========================================
-Läser ALLA priser från databasen och bygger ny JSON-struktur.
+Läser ALLA priser från databaser (Asker + Oslo) och bygger ny JSON-struktur.
+Stöder flera kommuner via kommune-fältet.
 Ingen beroende på gammal JSON - alltid komplett!
+
+Usage: python update_priser_json.py [kommune]
+       python update_priser_json.py Asker   (default)
+       python update_priser_json.py Oslo
+       python update_priser_json.py all     (alla kommuner)
 """
 
 import sqlite3
 import json
+import sys
+import os
 from datetime import datetime
 
-DB_PATH = '../virkespriser/virke_priser.db'
-JSON_PATH = 'api/priser.json'
+# Determine which kommune(s) to update
+KOMMUNE_ARG = sys.argv[1].lower() if len(sys.argv) > 1 else 'asker'
+
+# Database paths
+VIRKESPRIser_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'virkespriser')
+
+DB_PATHS = {
+    'asker': {
+        'db': os.path.join(VIRKESPRIser_DIR, 'virke_priser.db'),
+        'col_butik': 'butik',  # Asker db uses Swedish column name
+        'kommune': 'Asker',
+    },
+    'oslo': {
+        'db': os.path.join(VIRKESPRIser_DIR, 'oslo', 'virke_priser_oslo.db'),
+        'col_butik': 'butikk',  # Other dbs use Norwegian column name
+        'kommune': 'Oslo',
+    },
+}
 
 # Butikkonfig - färger och ikoner
 STORE_CONFIG = {
@@ -21,72 +45,112 @@ STORE_CONFIG = {
     'Obs BYGG': {'color': 'bg-pink-600', 'icon': 'O'}
 }
 
-# Hämta ALLA priser från databasen
-conn = sqlite3.connect(DB_PATH)
-c = conn.cursor()
-c.execute("""
-    SELECT butik, dimension, pris_kr_m, produkt, kvalitet_klass, impregnering, 
-           kampanj, kilde_url, datum_funnet, uppdaterad, ort, kommune
-    FROM virke_priser 
-    ORDER BY dimension, butik
-""")
-rows = c.fetchall()
-conn.close()
-
-print(f"Läste {len(rows)} priser från databasen")
-
-# Gruppera priser per dimension
-dimensions = {}
-for row in rows:
-    (butik, dim, price, produkt, klass, imp, kampanj, url, datum, updated, ort, kommune) = row
+def build_json_for_kommune(kommune_key):
+    """Build prices JSON for a single kommune"""
+    config = DB_PATHS[kommune_key]
+    db_path = config['db']
+    col_butik = config['col_butik']
+    kommune = config['kommune']
     
-    if dim not in dimensions:
-        dimensions[dim] = []
+    if not os.path.exists(db_path):
+        print(f"[WARN] Databasen finns inte: {db_path}")
+        return None
     
-    config = STORE_CONFIG.get(butik, {'color': 'bg-gray-600', 'icon': '?'})
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute(f"""
+        SELECT {col_butik}, dimension, pris_kr_m, produkt, kvalitet_klass, impregnering, 
+               kampanj, kilde_url, datum_funnet, uppdaterad, ort, kommune
+        FROM virke_priser 
+        WHERE pris_kr_m > 0
+        ORDER BY dimension, {col_butik}
+    """)
+    rows = c.fetchall()
+    conn.close()
     
-    dimensions[dim].append({
-        'butik': butik,
-        'pris_kr_m': price,
-        'produkt': produkt or '',
-        'kvalitet_klass': klass or 'Kl.1',
-        'impregnering': imp or 'CU',
-        'kampanj': bool(kampanj),
-        'kilde_url': url or '',
-        'datum_funnet': datum or datetime.now().strftime('%Y-%m-%d'),
-        'uppdaterad': updated or datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'status': 'green',
-        'store_color': config['color'],
-        'store_icon': config['icon'],
-        'kommune': kommune or 'Asker',
-        'changed_since_last': False,
-        'previous_price': price,
-        'change': 0,
-        'change_percent': 0.0
-    })
+    print(f"  {kommune}: Läste {len(rows)} priser från databasen")
+    
+    dimensions = {}
+    for row in rows:
+        (butik, dim, price, produkt, klass, imp, kampanj, url, datum, updated, ort, kmn) = row
+        
+        if dim not in dimensions:
+            dimensions[dim] = []
+        
+        store_config = STORE_CONFIG.get(butik, {'color': 'bg-gray-600', 'icon': '?'})
+        
+        dimensions[dim].append({
+            'butik': butik,
+            'pris_kr_m': price,
+            'produkt': produkt or '',
+            'kvalitet_klass': klass or 'Kl.1',
+            'impregnering': imp or 'CU',
+            'kampanj': bool(kampanj),
+            'kilde_url': url or '',
+            'datum_funnet': datum or datetime.now().strftime('%Y-%m-%d'),
+            'uppdaterad': updated or datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'status': 'green',
+            'store_color': store_config['color'],
+            'store_icon': store_config['icon'],
+            'kommune': kmn or kommune,
+            'changed_since_last': False,
+            'previous_price': price,
+            'change': 0,
+            'change_percent': 0.0
+        })
+    
+    return dimensions
 
-# Bygg hela JSON-strukturen
-now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-data = {
-    'generated_at': now,
-    'next_update': datetime.now().strftime('%Y-%m-%dT06:00:00'),
-    'dimensions': {}
-}
+def main():
+    now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    
+    # Determine which kommuner to process
+    if KOMMUNE_ARG == 'all':
+        kommune_keys = list(DB_PATHS.keys())
+    else:
+        kommune_keys = [KOMMUNE_ARG] if KOMMUNE_ARG in DB_PATHS else ['asker']
+    
+    print(f"Bygger priser.json för: {[DB_PATHS[k]['kommune'] for k in kommune_keys]}")
+    
+    # Collect all prices
+    all_dimensions = {}
+    for key in kommune_keys:
+        result = build_json_for_kommune(key)
+        if result:
+            for dim, prices in result.items():
+                if dim not in all_dimensions:
+                    all_dimensions[dim] = []
+                all_dimensions[dim].extend(prices)
+    
+    # Build JSON structure
+    data = {
+        'generated_at': now,
+        'next_update': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'dimensions': {}
+    }
+    
+    for dim in ['21x95', '28x120', '48x148', '48x198']:
+        if dim in all_dimensions:
+            sorted_prices = sorted(all_dimensions[dim], key=lambda x: x['pris_kr_m'])
+            data['dimensions'][dim] = sorted_prices
+    
+    # Save JSON
+    json_path = 'api/priser.json'
+    os.makedirs('api', exist_ok=True)
+    with open(json_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    
+    print(f"\n[OK] Byggde priser.json från grunden")
+    print(f"Kommuner: {[DB_PATHS[k]['kommune'] for k in kommune_keys]}")
+    print(f"Dimensioner: {list(data['dimensions'].keys())}")
+    for dim, prices in data['dimensions'].items():
+        kommune_count = {}
+        for p in prices:
+            k = p.get('kommune', 'Okänd')
+            kommune_count[k] = kommune_count.get(k, 0) + 1
+        print(f"  {dim}: {len(prices)} priser ({kommune_count})")
+    print(f"Sparad till: {json_path}")
+    print(f"Timestamp: {now}")
 
-# Lägg till dimensioner i rätt ordning
-for dim in ['21x95', '28x120', '48x148', '48x198']:
-    if dim in dimensions:
-        # Sortera efter pris (lägst först)
-        sorted_prices = sorted(dimensions[dim], key=lambda x: x['pris_kr_m'])
-        data['dimensions'][dim] = sorted_prices
-
-# Spara JSON
-with open(JSON_PATH, 'w', encoding='utf-8') as f:
-    json.dump(data, f, indent=2, ensure_ascii=False)
-
-print(f"\n[OK] Byggde priser.json från grunden")
-print(f"Dimensioner: {list(data['dimensions'].keys())}")
-for dim, prices in data['dimensions'].items():
-    print(f"  {dim}: {len(prices)} priser")
-print(f"Sparad till: {JSON_PATH}")
-print(f"Timestamp: {now}")
+if __name__ == '__main__':
+    main()
