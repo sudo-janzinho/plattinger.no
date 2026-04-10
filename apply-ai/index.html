@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Apply.no — Bedre matchning mellom jobbsøker og jobb</title>
+<meta name="description" content="AI som skreddersyr jobbsøknaden din for hver eneste annonsen. Ikke flere generiske brev — bedre matchning.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #1a1a2e; background: #fff; }
+  
+  /* Hero */
+  .hero { background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); padding: 80px 40px 60px; text-align: center; }
+  .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.12; margin-bottom: 16px; }
+  .hero h1 span { color: #0097b2; }
+  .hero .subtitle { font-size: 20px; color: #666; max-width: 600px; margin: 0 auto 32px; line-height: 1.5; }
+  .hero .tagline { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+  
+  /* CTA */
+  .cta-box { max-width: 460px; margin: 0 auto; }
+  .cta-box input { width: 100%; padding: 16px 20px; border: 2px solid #ddd; border-radius: 12px; font-size: 16px; margin-bottom: 12px; outline: none; transition: border-color 0.2s; }
+  .cta-box input:focus { border-color: #0097b2; }
+  .cta-box button { width: 100%; padding: 16px; background: #0097b2; color: #fff; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .cta-box button:hover { background: #007a94; }
+  .cta-box .cta-sub { font-size: 13px; color: #999; margin-top: 8px; }
+  .cta-box .success { display: none; background: #e8f8e8; color: #2ecc71; padding: 16px; border-radius: 12px; font-weight: 600; font-size: 16px; }
+  
+  /* Stats bar */
+  .stats-bar { background: #fff; padding: 40px 20px; border-bottom: 1px solid #eee; }
+  .stats-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .stat-item { text-align: center; }
+  .stat-item .num { font-size: 32px; font-weight: 800; color: #e74c3c; }
+  .stat-item .label { font-size: 13px; color: #888; margin-top: 2px; }
+  .stat-item .source { font-size: 10px; color: #bbb; }
+  
+  /* How it works */
+  .how { padding: 60px 40px; background: #fff; }
+  .how h2 { font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 40px; }
+  .how h2 span { color: #0097b2; }
+  .steps-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .step-card { background: #f8f9fa; border-radius: 18px; padding: 28px 20px; text-align: center; border: 2px solid transparent; transition: all 0.2s; }
+  .step-card:hover { border-color: #0097b2; background: #f0fafb; }
+  .step-card .num { width: 36px; height: 36px; border-radius: 50%; background: #0097b2; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 12px; }
+  .step-card .icon { font-size: 32px; margin-bottom: 10px; }
+  .step-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .step-card p { font-size: 13px; color: #666; line-height: 1.5; }
+  
+  /* Quote */
+  .quote { background: linear-gradient(135deg, #f8f9fa, #e8f4f8); padding: 50px 40px; }
+  .quote-inner { max-width: 700px; margin: 0 auto; background: #fff; border-left: 5px solid #e74c3c; border-radius: 0 16px 16px 0; padding: 28px 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.04); }
+  .quote-inner blockquote { font-size: 18px; font-style: italic; color: #555; line-height: 1.6; margin-bottom: 12px; }
+  .quote-inner .who { font-weight: 700; font-size: 14px; color: #1a1a2e; }
+  .quote-inner .who span { color: #888; font-weight: 400; }
+  .quote-insight { max-width: 700px; margin: 20px auto 0; padding: 20px 24px; background: #fff; border-radius: 16px; border: 1px solid #d0ecf0; }
+  .quote-insight .qi-title { font-weight: 700; color: #0097b2; font-size: 15px; margin-bottom: 6px; }
+  .quote-insight .qi-text { font-size: 14px; color: #555; line-height: 1.5; }
+  
+  /* Why */
+  .why { padding: 60px 40px; background: #fff; }
+  .why h2 { font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 36px; }
+  .why h2 span { color: #0097b2; }
+  .why-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .why-card { background: #f8f9fa; border-radius: 16px; padding: 22px; border: 1px solid #eee; }
+  .why-card .wc-icon { font-size: 24px; margin-bottom: 8px; }
+  .why-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .why-card p { font-size: 13px; color: #666; line-height: 1.4; }
+  
+  /* CTA Bottom */
+  .cta-bottom { background: linear-gradient(135deg, #0097b2, #007a94); padding: 60px 40px; text-align: center; color: #fff; }
+  .cta-bottom h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .cta-bottom p { font-size: 18px; opacity: 0.9; margin-bottom: 28px; }
+  .cta-bottom input { width: 320px; max-width: 100%; padding: 16px 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; font-size: 16px; background: rgba(255,255,255,0.15); color: #fff; margin-bottom: 12px; outline: none; }
+  .cta-bottom input::placeholder { color: rgba(255,255,255,0.6); }
+  .cta-bottom button { padding: 16px 40px; background: #fff; color: #0097b2; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .cta-bottom button:hover { background: #f0f0f0; }
+  
+  /* Footer */
+  footer { background: #1a1a2e; color: #888; padding: 30px 40px; text-align: center; font-size: 13px; }
+  footer a { color: #0097b2; text-decoration: none; }
+  
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 32px; }
+    .hero .subtitle { font-size: 16px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .stats-inner { gap: 20px; }
+    .stat-item .num { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Bedre matchning mellom<br><span>jobbsøker og jobb</span></h1>
+  <p class="tagline">Ikke flere ansøkninger. Bedre ansøkninger.</p>
+  <p class="subtitle">AI skreddersyr søknaden din for hver eneste annonsen — basert på hvem du er, ikke en mal. Du søker smartere, og arbeidsgiveren finner noen de virkelig vil ha.</p>
+  <div class="cta-box">
+    <input type="email" id="email1" placeholder="Din e-postadresse">
+    <button onclick="signup('email1')">Få early access</button>
+    <p class="cta-sub">Gratis å prøve. Ingen spam. Vi kontakter deg når vi lanserer.</p>
+    <div class="success" id="success1">✅ Takk! Vi holder deg oppdatert.</div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="num">9,5%</div>
+      <div class="label">nyutdannede arbeidsledige</div>
+      <div class="source">NIFU 2025</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">489</div>
+      <div class="label">søkere på én juniorstilling</div>
+      <div class="source">NAV / Kode24</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">−12%</div>
+      <div class="label">færre stillinger, +12% søkere</div>
+      <div class="source">FINN 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="how">
+  <h2>Slik fungerer <span>ai-apply.no</span></h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="num">1</div>
+      <div class="icon">💬</div>
+      <h3>Bygg din profilsjel</h3>
+      <p>Samtale med AI — ikke et skjema. Vi lærer hvem du er, hva du kan, og hva som gjør deg unik.</p>
+    </div>
+    <div class="step-card">
+      <div class="num">2</div>
+      <div class="icon">🔍</div>
+      <h3>AI skanner jobber</h3>
+      <p>24/7 overvåking av NAV, Finn, LinkedIn og mer. Du går ikke glipp av drømjobben.</p>
+    </div>
+    <div class="step-card">
+      <div class="num">3</div>
+      <div class="icon">✍️</div>
+      <h3>Skreddersyr ansøkning</h3>
+      <p>Unikt brev per annonsen. Samme person, samme CV — men hver ansøkning er skrevet for akkurat det jobbet.</p>
+    </div>
+    <div class="step-card">
+      <div class="num">4</div>
+      <div class="icon">📧</div>
+      <h3>Sender fra din e-post</h3>
+      <p>Arbeidsgiveren ser en vanlig søknad fra en vanlig person. Ikke fra en tjeneste.</p>
+    </div>
+    <div class="step-card">
+      <div class="num">5</div>
+      <div class="icon">👁️</div>
+      <h3>Overvåker svar</h3>
+      <p>Intervjuinvitasjon? Vi varsler deg med en gang. Avslag? Vi lærer og justerer.</p>
+    </div>
+    <div class="step-card">
+      <div class="num">6</div>
+      <div class="icon">🎯</div>
+      <h3>Forbereder intervju</h3>
+      <p>Firmaoversikt, vanlige spørsmål, og mock-intervju med AI. Du er klar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Quote -->
+<section class="quote">
+  <div class="quote-inner">
+    <blockquote>"Jeg blir ofte slått av noen som har mer erfaring."</blockquote>
+    <div class="who">Ida Fronth-Andersen (25), siviløkonom NHH — 8 måneders jobbsøking <span>(E24, april 2026)</span></div>
+  </div>
+  <div class="quote-insight">
+    <div class="qi-title">💡 Det trenger ikke å være slik</div>
+    <div class="qi-text">Ida har studert i Kina, ledet fotogruppe og festival — erfaringer som kompenserer for manglende arbeidserfaring. Hun solgte det ikke. ApplyAI hadde sett det, vinklet hver ansøkning etter det, og foreslått roller der hennes profil er en styrke. Kanskje hun også søkte for høyt — vi hjelper deg å finne riktig nivå.</div>
+  </div>
+</section>
+
+<!-- Why -->
+<section class="why">
+  <h2>Hvorfor <span>ai-apply.no</span>?</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="wc-icon">🎯</div>
+      <h3>Bedre matchning, ikke spam</h3>
+      <p>489 søkere på én stilling — de fleste dårlige matcher. Vi sørger for at din treffer.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">⏰</div>
+      <h3>Aldri gå glipp av drømjobben</h3>
+      <p>Vi skanner 24/7. Du ser ikke en utgått annonsen — vi varsler før fristen.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">🧠</div>
+      <h3>Selger det du faktisk kan</h3>
+      <p>Din unike bakgrunn er en styrke. AI ser hva du missede og vinkler det riktig.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">📐</div>
+      <h3>Realistisk nivå</h3>
+      <p>Søker du for høyt? Vi foreslår junior-versjoner, vekst-bedrifter, strategiske kompromisser.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">📊</div>
+      <h3>20× flere bra ansøkninger</h3>
+      <p>Fra 5 generiske til 100 skreddersydde. Kvalitet × volum = resultat.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">🗣️</div>
+      <h3>Mock-intervju med AI</h3>
+      <p>Øv med en AI som stiller følgespørsmål og presser svakheter. Hver gang unik.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">🏢</div>
+      <h3>Firmaoversikt leveres</h3>
+      <p>Omsetning, kunder, konkurrenter, kultur — du vet mer enn de fleste kandidater.</p>
+    </div>
+    <div class="why-card">
+      <div class="wc-icon">🤝</div>
+      <h3>Begge sider av matchningen</h3>
+      <p>Vi hjelper også arbeidsgivere skrive realistiske krav. Slutt på umulige kombinasjoner.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Bottom -->
+<section class="cta-bottom">
+  <h2>Klar for bedre matchning?</h2>
+  <p>Bli med på early access. Gratis å prøve.</p>
+  <input type="email" id="email2" placeholder="Din e-postadresse">
+  <br>
+  <button onclick="signup('email2')">Få early access</button>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2026 ai-apply.no — Bedre matchning mellom jobbsøker og jobb</p>
+  <p style="margin-top:6px;"><a href="mailto:hei@ai-apply.no">hei@ai-apply.no</a></p>
+</footer>
+
+<script>
+function signup(id) {
+  const email = document.getElementById(id).value;
+  if (!email || !email.includes('@')) {
+    alert('Vennligst skriv inn en gyldig e-postadresse.');
+    return;
+  }
+  // TODO: Send to backend / mailing list
+  // For now, save locally and show success
+  const existing = JSON.parse(localStorage.getItem('ai-apply-signups') || '[]');
+  existing.push({ email: email, date: new Date().toISOString() });
+  localStorage.setItem('ai-apply-signups', JSON.stringify(existing));
+  
+  const s1 = document.getElementById('success1');
+  if (s1) s1.style.display = 'block';
+  document.getElementById(id).value = '';
+  
+  // Also save to file for now
+  console.log('Signup:', email);
+}
+</script>
+</body>
+</html>
