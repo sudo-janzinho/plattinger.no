@@ -253,9 +253,12 @@
             loading.classList.add('hidden');
             content.classList.remove('hidden');
 
-            // Update timestamps
-            document.getElementById('last-updated').textContent = formatDate(data.generated_at);
-            const nextUpdate = data.next_update ? formatDate(data.next_update).split(', ')[1] : 'Ukjent';
+            // Update timestamps - use kommune-specific date
+            const kommuneDate = data.updated_per_kommune && data.updated_per_kommune[currentKommune]
+                ? data.updated_per_kommune[currentKommune]
+                : data.generated_at;
+            document.getElementById('last-updated').textContent = formatDate(kommuneDate);
+            const nextUpdate = kommuneDate.split(', ')[1] || 'Ukjent';
             document.getElementById('next-update').textContent = 'Neste: ' + nextUpdate;
 
             // Track stats

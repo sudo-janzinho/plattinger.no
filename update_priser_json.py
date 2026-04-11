@@ -126,8 +126,23 @@ def main():
     data = {
         'generated_at': now,
         'next_update': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+        'updated_per_kommune': {},
         'dimensions': {}
     }
+    
+    # Calculate last update per kommune
+    for key in kommune_keys:
+        config = DB_PATHS[key]
+        db_path = config['db']
+        if os.path.exists(db_path):
+            conn = sqlite3.connect(db_path)
+            c = conn.cursor()
+            c.execute(f"SELECT MAX(uppdaterad) FROM virke_priser")
+            result = c.fetchone()[0]
+            conn.close()
+            data['updated_per_kommune'][config['kommune']] = result or now
+        else:
+            data['updated_per_kommune'][config['kommune']] = now
     
     for dim in ['21x95', '28x120', '48x148', '48x198']:
         if dim in all_dimensions:
@@ -135,8 +150,8 @@ def main():
             data['dimensions'][dim] = sorted_prices
     
     # Save JSON
-    json_path = 'api/priser.json'
-    os.makedirs('api', exist_ok=True)
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api', 'priser.json')
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     
@@ -150,6 +165,7 @@ def main():
             kommune_count[k] = kommune_count.get(k, 0) + 1
         print(f"  {dim}: {len(prices)} priser ({kommune_count})")
     print(f"Sparad till: {json_path}")
+    print(f"updated_per_kommune: {data.get('updated_per_kommune', 'Saknas')}")
     print(f"Timestamp: {now}")
 
 if __name__ == '__main__':
