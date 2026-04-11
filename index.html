@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plattinger.no - Sammenlign virkespriser i Asker</title>
+    <title>Plattinger.no - Jämför virkespriser i Asker</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,16 +34,28 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-amber-400 to-blue-400">
                 Plattinger.no
             </h1>
-            <p class="text-xl text-gray-300 mb-2">Sammenlign virkespriser i Asker</p>
-            <p class="text-gray-400">Trykkimpregnert virke | Klasse 1</p>
+            <p class="text-xl text-gray-300 mb-2">Jämför virkespriser i <span id="kommune-name">Asker</span></p>
+            <p class="text-gray-400">Tryckimpregnerat virke | Klass 1</p>
+            
+            <!-- Kommune selector -->
+            <div class="mt-4 flex justify-center">
+                <select id="kommune-selector" onchange="selectKommune(this.value)" class="px-6 py-3 glass rounded-lg text-white font-semibold cursor-pointer hover:bg-white/10 transition">
+                    <option value="Asker">Asker</option>
+                    <option value="Drammen">Drammen</option>
+                    <option value="Sandvika">Sandvika</option>
+                    <option value="Oslo">Oslo</option>
+                    <option value="Lillestrøm">Lillestrøm</option>
+                </select>
+            </div>
+            
             <div class="mt-4 flex justify-center gap-4 text-sm flex-wrap">
                 <span class="px-4 py-2 glass rounded-full">
                     <i class="fas fa-calendar mr-2"></i>
-                    <span id="last-updated">Laster...</span>
+                    <span id="last-updated">Laddar...</span>
                 </span>
                 <span class="px-4 py-2 glass rounded-full">
                     <i class="fas fa-clock mr-2 text-blue-400"></i>
-                    <span id="next-update">Neste: ...</span>
+                    <span id="next-update">Nästa: ...</span>
                 </span>
             </div>
         </header>
@@ -51,16 +63,16 @@
         <!-- Loading state -->
         <div id="loading" class="text-center py-20">
             <i class="fas fa-circle-notch text-5xl text-blue-400 loading mb-4"></i>
-            <p class="text-xl text-gray-300">Laster priser...</p>
+            <p class="text-xl text-gray-300">Laddar priser...</p>
         </div>
 
         <!-- Error state -->
         <div id="error" class="hidden glass rounded-2xl p-8 text-center">
             <i class="fas fa-exclamation-triangle text-5xl text-red-400 mb-4"></i>
-            <h2 class="text-2xl font-bold mb-2">Kunne ikke laste priser</h2>
-            <p class="text-gray-400 mb-4">Prøv igjen om noen minutter</p>
+            <h2 class="text-2xl font-bold mb-2">Kunde inte ladda priser</h2>
+            <p class="text-gray-400 mb-4">Försök igen om några minuter</p>
             <button onclick="loadPrices()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition">
-                <i class="fas fa-sync-alt mr-2"></i>Prøv igjen
+                <i class="fas fa-sync-alt mr-2"></i>Försök igen
             </button>
         </div>
 
@@ -106,23 +118,23 @@
                 </div>
             </section>
 
-            <!-- Oppsummering -->
+            <!-- Sammanfattning -->
             <section class="glass rounded-2xl p-6 mb-8">
                 <h3 class="text-xl font-bold mb-4">
-                    <i class="fas fa-chart-bar mr-2 text-green-400"></i>Oppsummering
+                    <i class="fas fa-chart-bar mr-2 text-green-400"></i>Sammanfattning
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div class="glass rounded-lg p-4">
-                        <p class="text-green-400 font-semibold mb-2">Billigst akkurat nå</p>
-                        <p class="text-gray-400" id="cheapest-price">Laster...</p>
+                        <p class="text-green-400 font-semibold mb-2">Billigast just nu</p>
+                        <p class="text-gray-400" id="cheapest-price">Laddar...</p>
                     </div>
                     <div class="glass rounded-lg p-4">
-                        <p class="text-amber-400 font-semibold mb-2">Butikker sammenlignes</p>
-                        <p class="text-gray-400" id="store-count">Laster...</p>
+                        <p class="text-amber-400 font-semibold mb-2">Butiker jämförs</p>
+                        <p class="text-gray-400" id="store-count">Laddar...</p>
                     </div>
                     <div class="glass rounded-lg p-4">
-                        <p class="text-blue-400 font-semibold mb-2">Oppdatert i dag</p>
-                        <p class="text-gray-400" id="updated-today">Laster...</p>
+                        <p class="text-blue-400 font-semibold mb-2">Uppdaterade idag</p>
+                        <p class="text-gray-400" id="updated-today">Laddar...</p>
                     </div>
                 </div>
             </section>
@@ -131,17 +143,27 @@
         <footer class="text-center text-gray-500 text-sm mt-12">
             <p>
                 <i class="fas fa-robot mr-1"></i>
-                Priser hentes automatisk 2 ganger daglig
+                Priser hämtas automatiskt 2 gånger dagligen
             </p>
             <p class="mt-2 text-xs">
                 <i class="fas fa-code mr-1"></i>
-                Bygget med OpenClaw | <a href="https://github.com/sudo-janzinho/plattinger.no" target="_blank" class="text-blue-400 hover:text-blue-300">GitHub</a>
+                Byggd med OpenClaw | <a href="https://github.com/sudo-janzinho/plattinger.no" target="_blank" class="text-blue-400 hover:text-blue-300">GitHub</a>
             </p>
         </footer>
 
     </div>
 
     <script>
+        // Current kommune
+        let currentKommune = 'Asker';
+
+        // Kommune selector
+        function selectKommune(kommune) {
+            currentKommune = kommune;
+            document.getElementById('kommune-name').textContent = kommune;
+            renderPrices(window.currentData);
+        }
+
         // Dimension mapping
         const DIMENSION_NAMES = {
             '28x120': 'Terrassebord 28x120 mm',
@@ -152,9 +174,9 @@
 
         // Format date
         function formatDate(dateString) {
-            if (!dateString) return 'Ukjent';
+            if (!dateString) return 'Okänt';
             const date = new Date(dateString);
-            return date.toLocaleString('nb-NO', {
+            return date.toLocaleString('sv-SE', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -174,7 +196,7 @@
                 ? '<i class="fas fa-circle text-green-400 text-xs mr-1"></i>' 
                 : '<i class="fas fa-circle text-red-400 text-xs mr-1"></i>';
             
-            const statusText = price.status === 'green' ? 'Oppdatert i dag' : 'Eldre data';
+            const statusText = price.status === 'green' ? 'Uppdaterad idag' : 'Äldre data';
             
             const changeIndicator = price.changed_since_last 
                 ? `<div class="text-xs ${price.change > 0 ? 'text-red-400' : 'text-green-400'} mt-1">
@@ -182,8 +204,8 @@
                    </div>`
                 : '';
 
-            // Fallback for manglende butikker (vis "Mangler" istedet for undefined)
-            const butikName = price.butikk || price.butik || 'Mangler';
+            // Fallback för saknade butiker (visa "Saknas" istället för undefined)
+            const butikName = price.butikk || price.butik || 'Saknas';
 
             return `
                 <div class="card ${isCheapest ? 'best-price' : 'glass'} rounded-xl p-4">
@@ -191,7 +213,7 @@
                         <div class="store-icon ${price.store_color}">${price.store_icon}</div>
                         <div>
                             <h3 class="font-bold">${butikName}</h3>
-                            <p class="text-xs text-green-100">Asker</p>
+                            <p class="text-xs text-green-100">${price.kommune || 'Asker'}</p>
                         </div>
                     </div>
                     <div class="text-3xl font-bold mb-2">${formatPrice(price.pris_kr_m)}</div>
@@ -210,6 +232,9 @@
 
         // Render prices
         function renderPrices(data) {
+            // Save data globally for kommune switching
+            window.currentData = data;
+            
             const content = document.getElementById('content');
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
@@ -235,8 +260,11 @@
                 const container = document.getElementById(`prices-${dimension}`);
                 if (!container) continue;
 
-                // Filter out invalid prices
-                const validPrices = prices.filter(p => p.pris_kr_m && p.pris_kr_m > 0);
+                // Filter by kommune AND valid prices
+                const validPrices = prices.filter(p => 
+                    p.pris_kr_m && p.pris_kr_m > 0 && 
+                    (p.kommune === currentKommune || currentKommune === 'Alle')
+                );
 
                 if (validPrices.length === 0) {
                     container.innerHTML = '<p class="text-gray-400 col-span-full text-center">Ingen priser tilgjengelig</p>';
