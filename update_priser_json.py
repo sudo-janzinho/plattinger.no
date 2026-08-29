@@ -26,13 +26,23 @@ VIRKESPRIser_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 DB_PATHS = {
     'asker': {
         'db': os.path.join(VIRKESPRIser_DIR, 'virke_priser.db'),
-        'col_butik': 'butik',  # Asker db uses Swedish column name
+        'col_butik': 'butik',
         'kommune': 'Asker',
     },
     'oslo': {
         'db': os.path.join(VIRKESPRIser_DIR, 'oslo', 'virke_priser_oslo.db'),
-        'col_butik': 'butikk',  # Other dbs use Norwegian column name
+        'col_butik': 'butik',
         'kommune': 'Oslo',
+    },
+    'lillestrom': {
+        'db': os.path.join(VIRKESPRIser_DIR, 'lillestrom', 'virke_priser_lillestrom.db'),
+        'col_butik': 'butik',
+        'kommune': 'Lillestrøm',
+    },
+    'drammen': {
+        'db': os.path.join(VIRKESPRIser_DIR, 'drammen', 'virke_priser_drammen.db'),
+        'col_butik': 'butik',
+        'kommune': 'Drammen',
     },
 }
 
@@ -58,17 +68,37 @@ def build_json_for_kommune(kommune_key):
     
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
+    
+    # Check available columns
+    c.execute("PRAGMA table_info(virke_priser)")
+    columns = [col[1] for col in c.fetchall()]
+    
+    # Build column list dynamically based on what exists
+    col_ort = 'ort' if 'ort' in columns else ('plats' if 'plats' in columns else f"'{kommune}'")
+    col_kommune = 'kommune' if 'kommune' in columns else f"'{kommune}'"
+    col_kilde = 'kilde' if 'kilde' in columns else "'auto'"
+    col_uppdaterad = 'uppdaterad' if 'uppdaterad' in columns else 'skapad'
+    col_datum = 'datum_funnet' if 'datum_funnet' in columns else 'skapad'
+    
+    select_cols = f"{col_butik}, dimension, pris_kr_m, produkt, kvalitet_klass, impregnering, kampanj, kilde_url, {col_datum}, {col_uppdaterad}, {col_ort}, {col_kommune}"
+    
+    # Use GROUP BY to get only the latest row per butik+dimension
     c.execute(f"""
-        SELECT {col_butik}, dimension, pris_kr_m, produkt, kvalitet_klass, impregnering, 
-               kampanj, kilde_url, datum_funnet, uppdaterad, ort, kommune
+        SELECT {select_cols}
         FROM virke_priser 
-        WHERE pris_kr_m > 0
+        WHERE id = (
+            SELECT id FROM virke_priser vp2
+            WHERE vp2.{col_butik} = virke_priser.{col_butik}
+              AND vp2.dimension = virke_priser.dimension
+            ORDER BY vp2.pris_kr_m DESC, vp2.uppdaterad DESC, vp2.id DESC
+            LIMIT 1
+          )
         ORDER BY dimension, {col_butik}
     """)
     rows = c.fetchall()
     conn.close()
     
-    print(f"  {kommune}: Läste {len(rows)} priser från databasen")
+    print(f"  {kommune}: Läste {len(rows)} priser från databasen (senaste per butik+dimension)")
     
     dimensions = {}
     for row in rows:
