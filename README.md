@@ -9,7 +9,6 @@
 Plattinger.no hämtar automatiskt virkespriser från **5 stora byggevarekeder** i Norge och visar dem på ett ställe för enkel jämförelse.
 
 **Butiker som jämförs:**
-- 🟦 **Bauhaus**
 - 🟧 **Byggmax**
 - 🔴 **Maxbo**
 - 🟧 **Monter**
@@ -86,7 +85,6 @@ plattinger.no/
 
 virkespriser/
 ├── update_monter_from_db.py    # Hämta Monter priser
-├── update_bauhaus_from_db.py   # Hämta Bauhaus priser
 ├── update_obsbygg_from_db.py   # Hämta Obs BYGG priser
 ├── update_maxbo_playwright.py  # Hämta Maxbo priser (Playwright)
 ├── update_byggmax_html.py      # Hämta Byggmax priser
@@ -121,7 +119,6 @@ playwright install
 # Hämta priser från alla butiker
 cd virkespriser
 python update_monter_from_db.py
-python update_bauhaus_from_db.py
 python update_obsbygg_from_db.py
 python update_maxbo_playwright.py
 python update_byggmax_html.py

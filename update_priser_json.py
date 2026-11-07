@@ -48,7 +48,6 @@ DB_PATHS = {
 
 # Butikkonfig - färger och ikoner
 STORE_CONFIG = {
-    'Bauhaus': {'color': 'bg-blue-600', 'icon': 'B'},
     'Byggmax': {'color': 'bg-orange-600', 'icon': 'B'},
     'Maxbo': {'color': 'bg-red-600', 'icon': 'M'},
     'Monter': {'color': 'bg-orange-600', 'icon': 'M'},
